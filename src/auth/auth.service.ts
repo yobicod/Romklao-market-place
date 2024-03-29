@@ -2,6 +2,7 @@ import { HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { IAccessToken } from './auth.interface';
 
 @Injectable()
 export class AuthService {
@@ -9,7 +10,7 @@ export class AuthService {
     private user: UserService,
     private jwt: JwtService,
   ) {}
-  public async signIn(username: string, pass: string): Promise<any> {
+  public async signIn(username: string, pass: string): Promise<IAccessToken> {
     try {
       const user = await this.user.findUser(username);
       const isMatch = await bcrypt.compare(pass, user.password);
