@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { SignupDto } from './user.dto';
 import * as bcrypt from 'bcrypt';
+import { IUser } from './user.interface';
 
 @Injectable()
 export class UserService {
@@ -29,17 +30,22 @@ export class UserService {
     }
   }
 
-  public async findUser(username: string): Promise<any> {
+  public async findUser(username: string): Promise<IUser> {
     try {
-      const user = await this.prisma.user.findUniqueOrThrow({
+      const user = await this.prisma.user.findUnique({
         where: {
           username: username,
         },
       });
 
-      if (user) {
-        return user;
+      if (!user) {
+        throw new NotFoundException({
+          statusCode: HttpStatus.NOT_FOUND,
+          message: 'User not found',
+        });
       }
+
+      return user;
     } catch (error) {
       throw error;
     }
