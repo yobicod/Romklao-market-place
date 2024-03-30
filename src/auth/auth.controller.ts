@@ -1,10 +1,19 @@
-import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Post,
+  Request,
+} from '@nestjs/common';
 import { LoginDto, ResponseLoginDto } from './auth.dto';
 import { AuthService } from './auth.service';
+import { Public } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(private auth: AuthService) {}
+  @Public()
   @Post('login')
   async signIn(@Body() req: LoginDto): Promise<any> {
     try {
@@ -18,5 +27,10 @@ export class AuthController {
     } catch (error) {
       throw error;
     }
+  }
+
+  @Get('profile')
+  getProfile(@Request() req) {
+    return req.user;
   }
 }
