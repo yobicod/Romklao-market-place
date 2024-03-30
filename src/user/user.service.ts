@@ -1,4 +1,9 @@
-import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { SignupDto } from './user.dto';
 import * as bcrypt from 'bcrypt';
@@ -12,9 +17,6 @@ export class UserService {
     try {
       const hashPassword = await bcrypt.hash(req.password, 10);
 
-      // Compare password with hash value
-      // const isMatch = await bcrypt.compare(req.password, hashPassword);
-
       const created = await this.prisma.user.create({
         data: {
           username: req.username,
@@ -26,7 +28,11 @@ export class UserService {
         return true;
       }
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException({
+        message: 'Internal server error',
+        error: error,
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      });
     }
   }
 

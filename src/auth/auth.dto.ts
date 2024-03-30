@@ -15,7 +15,7 @@ interface IAccessToken {
 }
 export class ResponseLoginDto extends ResponseBuilder {
   constructor(statusCode: number, message: string, data: IAccessToken) {
-    super(statusCode, message);
+    super(message, statusCode);
     this.data = data;
   }
   data: IAccessToken;

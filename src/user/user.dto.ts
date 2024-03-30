@@ -6,8 +6,8 @@ export class SignupDto {
 }
 
 export class ResponseSignUpDto extends ResponseBuilder {
-  constructor(statusCode: number, message: string, data: boolean) {
-    super(statusCode, message);
+  constructor(message: string, statusCode: number, data: boolean) {
+    super(message, statusCode);
     this.data = data;
   }
   data: boolean;
