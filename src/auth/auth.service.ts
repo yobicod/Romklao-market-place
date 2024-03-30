@@ -16,8 +16,9 @@ export class AuthService {
       const isMatch = await bcrypt.compare(pass, user.password);
       if (!isMatch) {
         throw new UnauthorizedException({
-          statusCode: HttpStatus.UNAUTHORIZED,
           message: 'Password not match.',
+          error: 'Unauthorized',
+          statusCode: HttpStatus.UNAUTHORIZED,
         });
       }
 

@@ -33,8 +33,9 @@ export class AuthGuard implements CanActivate {
     const token = this.extractTokenFromHeader(request);
     if (!token) {
       throw new UnauthorizedException({
-        statusCode: HttpStatus.UNAUTHORIZED,
         message: 'Missing JWT token.',
+        error: 'Unauthorized',
+        statusCode: HttpStatus.UNAUTHORIZED,
       });
     }
     try {
@@ -45,8 +46,9 @@ export class AuthGuard implements CanActivate {
       request['user'] = payload;
     } catch {
       throw new UnauthorizedException({
-        statusCode: HttpStatus.UNAUTHORIZED,
         message: 'Unauthorized, Invalid JWT token.',
+        error: 'Unauthorized',
+        statusCode: HttpStatus.UNAUTHORIZED,
       });
     }
     return true;
