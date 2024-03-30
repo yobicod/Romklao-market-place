@@ -15,7 +15,7 @@ export class AuthController {
   constructor(private auth: AuthService) {}
   @Public()
   @Post('login')
-  async signIn(@Body() req: LoginDto): Promise<any> {
+  async signIn(@Body() req: LoginDto): Promise<ResponseLoginDto> {
     try {
       const access_token = await this.auth.signIn(req.username, req.password);
 
